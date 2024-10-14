@@ -1,0 +1,157 @@
+.overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 200;
+  overflow: hidden;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+  display: flex;
+
+  .drawer {
+    position: absolute;
+    width: 420px;
+    height: 100%;
+    right: -420px;
+    background-color: #fff;
+    transition: all 0.2s ease-in-out;
+    padding: 30px;
+
+    .content {
+      display: flex;
+      flex-direction: column;
+
+      .title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 20px;
+        margin-bottom: 30px;
+
+        span {
+          font-size: 20px;
+          font-weight: 600;
+        }
+        .closeImg {
+          user-select: none;
+          cursor: pointer;
+          width: 25px;
+        }
+      }
+      .items {
+        height: 70vh;
+        width: 100%;
+        border-bottom: 1px solid #757575;
+        display: flex;
+        flex-direction: column;
+        overflow: scroll;
+      }
+      .totalCoast {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 100px;
+
+        .info {
+          font-weight: 600;
+          font-size: 20px;
+
+          p {
+            margin-bottom: 5px;
+          }
+          span {
+            width: 100%;
+            text-align: center;
+          }
+        }
+        .subBut {
+          user-select: none;
+          width: 45%;
+          height: 45px;
+          text-align: center;
+          padding: 10px;
+          font-size: 18px;
+          font-weight: 500;
+          transition: all 0.15s ease-in-out;
+          cursor: pointer;
+          color: #fff;
+          border: 1px solid #50a060;
+          background-color: #50a060;
+
+          &:hover {
+            color: #50a060;
+            background: 0;
+          }
+        }
+      }
+      .cartImg {
+        margin-top: 30vh;
+        width: 100%;
+      }
+    }
+  }
+
+  @media (max-width: 900px) {
+    .drawer {
+      width: 100vw;
+      right: -100vw;
+
+      .content {
+        .title {
+          height: 20px;
+          span {
+            font-size: 18px;
+          }
+          .closeImg {
+            width: 20px;
+          }
+        }
+        .items {
+          height: 65vh;
+          margin-bottom: 20px;
+        }
+        .totalCoast {
+          height: auto;
+          flex-direction: column;
+
+          .info {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            font-size: 18px;
+            margin-bottom: 20px;
+
+            p {
+              margin-bottom: 5px;
+            }
+            span {
+              width: auto;
+            }
+          }
+          .subBut {
+            width: 100%;
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.overlayVisible {
+  visibility: visible;
+  opacity: 1;
+
+  .clickArea {
+    width: calc(100vw - 420px);
+    height: 100%;
+  }
+
+  .drawer {
+    right: 0;
+  }
+}
