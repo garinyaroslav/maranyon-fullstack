@@ -1,7 +1,7 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route } from "react-router-dom";
 
-import { Home, NotFound, Categories, FullProduct } from './pages';
-import { MainLayout } from './layouts/MainLayout';
+import { Home, NotFound, Categories, FullProduct } from "./pages";
+import { MainLayout } from "./layouts/MainLayout";
 
 export const App = () => {
   return (
