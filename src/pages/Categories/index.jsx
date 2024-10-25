@@ -8,7 +8,6 @@ import { ProductBlock } from '../../components';
 import { scrollUp } from '../../utils/scrollUp';
 
 import styles from './Categories.module.scss';
-import { Link } from 'react-router-dom';
 
 const categories = ['all', 'furnitures', 'lamps', 'electronics', 'kitchen', 'chairs', 'mirrors'];
 const categoryNames = ['Все', 'Мебель', 'Люстры', 'Электроника', 'Кухня', 'Стулья', 'Зеркала'];
@@ -35,13 +34,7 @@ export const Categories = () => {
 
   const skeletons = [...new Array(8)].map((_, i) => <Skeleton key={i} />);
   const prodItems = products.map((obj, i) => (
-    <ProductBlock
-      key={i}
-      id={obj.id}
-      title={obj.title}
-      image={obj.imageUrls[0]}
-      price={obj.price}
-    />
+    <ProductBlock key={i} id={obj.id} title={obj.title} image={obj.imageUrls[0]} price={obj.price} />
   ));
 
   return (

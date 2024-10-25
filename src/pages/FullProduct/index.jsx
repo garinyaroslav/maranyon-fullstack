@@ -20,7 +20,7 @@ export const FullProduct = () => {
 
   React.useEffect(() => {
     dispatch(fetchProduct(id));
-  }, []);
+  }, [id]);
 
   React.useEffect(() => {
     scrollUp();

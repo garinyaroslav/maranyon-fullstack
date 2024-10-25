@@ -1,0 +1,14 @@
+.root {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #cfcfcf;
+  border-top: 1px solid #cfcfcf;
+  padding: 5px 0;
+  margin-bottom: 20px;
+
+  .rootElem {
+    width: 150px;
+    text-align: center;
+    font-weight: 500;
+  }
+}

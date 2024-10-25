@@ -1,0 +1,15 @@
+.root {
+  padding: 50px 50px;
+  width: 100vw;
+  overflow-x: hidden;
+
+  .mainTitle {
+    font-size: 28px;
+    margin-bottom: 60px;
+    border-bottom: 1px solid #000;
+  }
+
+  .subTitle {
+    margin-bottom: 20px;
+  }
+}
