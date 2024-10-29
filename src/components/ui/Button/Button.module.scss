@@ -1,4 +1,4 @@
-.button {
+.buttonBlack {
   cursor: pointer;
   font-size: 15px;
   background-color: #000;
@@ -6,8 +6,25 @@
   border: 1px solid #000;
   color: #fff;
   transition: all 0.25s ease-in-out;
+  user-select: none;
 
-  &:hover {
+  &:active {
+    color: #000;
+    background: #fff;
+  }
+}
+
+.buttonGreen {
+  cursor: pointer;
+  font-size: 15px;
+  background-color: #50a060;
+  padding: 10px 20px;
+  border: 1px solid #50a060;
+  color: #fff;
+  transition: all 0.25s ease-in-out;
+  user-select: none;
+
+  &:active {
     color: #000;
     background: #fff;
   }

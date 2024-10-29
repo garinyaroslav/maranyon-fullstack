@@ -1,10 +1,28 @@
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Input } from '../ui/Input';
+import { Button } from '../ui/Button';
 import s from './NewsItem.module.scss';
 
 export const NewsItem = ({ newsObj }) => {
+  const { register, handleSubmit, getValues, reset } = useForm({ defaultValues: {} });
+  const [commentStage, setCommentStage] = useState('name');
+  const name = getValues('name');
+
+  const changeStage = () => {
+    if (name && name.length > 0) setCommentStage('text');
+  };
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    setCommentStage('name');
+    reset();
+  };
+
   return (
     <div className={s.root}>
       <div className={s.newsBody}>
-        <img src={newsObj.image} alt={'newsImage'} />
+        <img src={newsObj.image} alt="newsImage" />
         <div className={s.text}>
           <div>
             <span className={s.title}>{newsObj.title}</span>
@@ -15,7 +33,44 @@ export const NewsItem = ({ newsObj }) => {
       </div>
       <div className={s.divider}></div>
       <div className={s.comments}>
-        <div classname={s.comment}></div>
+        <div className={s.comment}>
+          <img src="/img/avatar.svg" alt="avatar" />
+          <div className={s.textSide}>
+            <div className={s.commentName}>Ярослав Гарин</div>
+            <p>alksdfjlksadj lsadjflk jaslkdjf lksajdflk kasjdflk asjdflk asjdklfj sadkljf sad</p>
+          </div>
+        </div>
+        <div className={s.myComment}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <img src="/img/avatar.svg" alt="avatar" />
+            <div>
+              {commentStage === 'name' && (
+                <>
+                  <Input name={'name'} placeholder={'Ваше имя'} register={register} width={300} />
+                  <Button
+                    style={{ width: 120, marginTop: '20px' }}
+                    styleType={'green'}
+                    type={'button'}
+                    title={'Далее'}
+                    onClick={changeStage}
+                  />
+                </>
+              )}
+              {commentStage === 'text' && (
+                <>
+                  <span className={s.commentName}>{name}</span>
+                  <Input name={'text'} placeholder={'Ваш комментарий'} register={register} width={600} />
+                  <Button
+                    style={{ width: 210, marginTop: '20px' }}
+                    styleType={'green'}
+                    type={'submit'}
+                    title={'Оставить комментарий'}
+                  />
+                </>
+              )}
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

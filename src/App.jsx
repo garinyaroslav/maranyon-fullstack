@@ -12,8 +12,8 @@ export const App = () => {
         <Route path="news" element={<News />} />
         <Route path="categories" element={<Categories />} />
         <Route path="categories/product/:id" element={<FullProduct />} />
-        <Route path="*" element={<NotFound />} />
       </Route>
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };

@@ -12,7 +12,6 @@
     img {
       margin-top: 5px;
       height: 300px;
-      border-right: 1px solid #cbcbcb;
     }
 
     .text {
@@ -44,13 +43,53 @@
   }
 
   .divider {
-    margin: 40px auto;
+    margin: 30px auto;
     width: 90%;
     height: 1px;
     background: #cbcbcb;
   }
 
   .comments {
-    .comment {}
+    .comment {
+      padding: 0 45px;
+      display: flex;
+      margin-bottom: 20px;
+
+      img {
+        height: 25px;
+      }
+
+      .textSide {
+        margin-left: 15px;
+
+        .commentName {
+          font-weight: 500;
+          margin-bottom: 5px;
+        }
+      }
+    }
+
+    .myComment {
+      padding: 0 45px;
+
+      form {
+        display: flex;
+
+        img {
+          height: 25px;
+          margin-right: 15px;
+        }
+
+        div {
+          display: flex;
+          flex-direction: column;
+
+          .commentName {
+            font-weight: 500;
+            margin-bottom: 5px;
+          }
+        }
+      }
+    }
   }
 }

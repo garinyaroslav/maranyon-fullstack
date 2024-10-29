@@ -3,9 +3,9 @@ import { useDispatch } from 'react-redux';
 import { ProductModal } from '../ProductModal';
 import { fetchProducts, deleteProduct } from '../../redux/product/asyncActions';
 
-import s from './ElemsList.module.scss';
+import s from './ProductsList.module.scss';
 
-export const ElemsList = ({ elems }) => {
+export const ProductsList = ({ elems }) => {
   const dispatch = useDispatch();
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);

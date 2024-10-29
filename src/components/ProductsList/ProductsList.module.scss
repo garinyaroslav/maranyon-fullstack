@@ -1,0 +1,39 @@
+.root {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #cfcfcf;
+  padding: 5px 0;
+
+  .rootElem {
+    width: 150px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .iconsElem {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    width: 150px;
+    text-align: center;
+
+    img {
+      cursor: pointer;
+      height: 18px;
+      width: 18px;
+    }
+  }
+}
+
+.plusLine {
+  padding: 20px 0;
+  text-align: center;
+
+  img {
+    cursor: pointer;
+    height: 18px;
+    width: 18px;
+  }
+}
