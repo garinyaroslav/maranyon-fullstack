@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
+
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
+import { addReview, fetchReviewByNewsId } from '../../redux/review/asyncActions';
+
 import s from './NewsItem.module.scss';
-import { fetchReviewByNewsId } from '../../redux/review/asyncActions';
-import { useDispatch } from 'react-redux';
 
 export const NewsItem = ({ newsObj }) => {
   const dispatch = useDispatch();
-  const { register, handleSubmit, getValues, reset } = useForm({ defaultValues: {} });
+  const { register, handleSubmit, getValues, reset, watch } = useForm();
   const [commentStage, setCommentStage] = useState('name');
-  const name = getValues('name');
+  const name = watch('name');
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
@@ -18,10 +20,13 @@ export const NewsItem = ({ newsObj }) => {
   }, []);
 
   const changeStage = () => {
-    if (name && name.length > 0) setCommentStage('text');
+    if (name.length > 0) setCommentStage('text');
   };
 
   const onSubmit = async (data) => {
+    await dispatch(addReview({ text: data.text, userName: data.name, newsId: newsObj.id }));
+    const res = await dispatch(fetchReviewByNewsId(newsObj.id));
+    setComments(res.payload);
     setCommentStage('name');
     reset();
   };
@@ -33,7 +38,9 @@ export const NewsItem = ({ newsObj }) => {
         <div className={s.text}>
           <div>
             <span className={s.title}>{newsObj.title}</span>
-            <span className={s.date}>{newsObj.createdAt} | 0 Комментариев</span>
+            <span className={s.date}>
+              {newsObj.createdAt} | Комментариев: {comments.length}
+            </span>
             <p>{newsObj.description}</p>
           </div>
         </div>

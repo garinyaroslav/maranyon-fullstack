@@ -1,10 +1,20 @@
 import s from './Input.module.scss';
 
-export const Input = ({ width, register = null, name, disabled, value = null, onChange = null, placeholder }) => {
+export const Input = ({
+  width,
+  register = null,
+  name,
+  disabled,
+  value = null,
+  onChange = null,
+  onKeyDown = null,
+  placeholder,
+}) => {
   if (register !== null)
     return (
       <input
         {...register(name)}
+        onKeyDown={onKeyDown}
         placeholder={placeholder}
         disabled={disabled}
         style={{ width: width + 'px' }}
@@ -15,8 +25,9 @@ export const Input = ({ width, register = null, name, disabled, value = null, on
     return (
       <input
         value={value}
-        oplaceholder={placeholder}
         nChange={onChange}
+        onKeyDown={onKeyDown}
+        oplaceholder={placeholder}
         disabled={disabled}
         style={{ width: width + 'px' }}
         className={s.input}

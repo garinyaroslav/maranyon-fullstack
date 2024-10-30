@@ -25,7 +25,6 @@ const cartSlice = createSlice({
     },
     addItem: (state, action) => {
       if (state.items.find((item) => item.id === action.payload.item.id)) return;
-      console.log(action.payload);
       state.items.push({ ...action.payload.item, count: action.payload.itemCount });
     },
     removeItem: (state, action) => {
@@ -40,6 +39,5 @@ const cartSlice = createSlice({
   },
 });
 
-export const { setIsOpen, addItem, removeItem, countPrice, setItems, plusItem, minusItem } =
-  cartSlice.actions;
+export const { setIsOpen, addItem, removeItem, countPrice, setItems, plusItem, minusItem } = cartSlice.actions;
 export default cartSlice.reducer;

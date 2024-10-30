@@ -6,8 +6,6 @@ import { ReviewModal } from '../ReviewsModal';
 import s from './ReviewsList.module.scss';
 
 export const ReviewList = ({ elems }) => {
-  console.log(elems);
-
   const dispatch = useDispatch();
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
