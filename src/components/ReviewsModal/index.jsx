@@ -4,20 +4,18 @@ import { Modal } from '../ui/Modal';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
 import { useDispatch } from 'react-redux';
+import { addReview, fetchOneReview, fetchReviews, updateReview } from '../../redux/review/asyncActions';
 
-import s from './NewsModal.module.scss';
-import { addNews, fetchNews, fetchOneNews, updateNews } from '../../redux/news/asyncActions';
+import s from './ReviewsModal.module.scss';
 
-const newsTitles = ['id', 'title', 'image', 'description', 'createdAt'];
+const reviewTitles = ['id', 'newsId', 'userName', 'text'];
 
-export const NewsModal = ({ isOpen, onClose, type, editableProductId = null }) => {
+export const ReviewModal = ({ isOpen, onClose, type, editableProductId = null }) => {
   const dispatch = useDispatch();
   const [editableItem, setEditableItem] = useState({});
 
   useEffect(() => {
-    if (editableProductId) {
-      dispatch(fetchOneNews(editableProductId)).then((data) => setEditableItem(data.payload));
-    }
+    if (editableProductId) dispatch(fetchOneReview(editableProductId)).then((data) => setEditableItem(data.payload));
   }, [isOpen]);
 
   const { register, handleSubmit, reset } = useForm({ values: type === 'edit' ? editableItem : {} });
@@ -26,17 +24,19 @@ export const NewsModal = ({ isOpen, onClose, type, editableProductId = null }) =
     switch (type) {
       case 'edit':
         await dispatch(
-          updateNews({
+          updateReview({
             ...data,
             id: Number(data.id),
+            newsId: Number(data.newsId),
           }),
         );
         break;
       case 'add':
         await dispatch(
-          addNews({
+          addReview({
             ...data,
             id: Number(data.id),
+            newsId: Number(data.newsId),
           }),
         );
         break;
@@ -44,7 +44,7 @@ export const NewsModal = ({ isOpen, onClose, type, editableProductId = null }) =
         break;
     }
     onCansel();
-    await dispatch(fetchNews());
+    await dispatch(fetchReviews());
   };
 
   const onCansel = () => {
@@ -55,14 +55,18 @@ export const NewsModal = ({ isOpen, onClose, type, editableProductId = null }) =
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div onClick={(e) => e.stopPropagation()} className={s.root}>
-        <h3>{type === 'edit' ? 'Update news' : 'New news'}</h3>
+        <h3>{type === 'edit' ? 'Update review' : 'New review'}</h3>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={s.items}>
-            {newsTitles.map((t, i) => {
+            {reviewTitles.map((t, i) => {
               return (
                 <div key={i} className={s.inputBox}>
                   <span className={s.inputLabel}>{t}</span>
-                  <Input disabled={type === 'edit' && t === 'id'} name={t} register={register} />
+                  <Input
+                    disabled={(type === 'edit' && t === 'id') || (type === 'edit' && t === 'newsId')}
+                    name={t}
+                    register={register}
+                  />
                 </div>
               );
             })}

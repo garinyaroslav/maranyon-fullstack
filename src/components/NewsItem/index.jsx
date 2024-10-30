@@ -1,20 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
 import s from './NewsItem.module.scss';
+import { fetchReviewByNewsId } from '../../redux/review/asyncActions';
+import { useDispatch } from 'react-redux';
 
 export const NewsItem = ({ newsObj }) => {
+  const dispatch = useDispatch();
   const { register, handleSubmit, getValues, reset } = useForm({ defaultValues: {} });
   const [commentStage, setCommentStage] = useState('name');
   const name = getValues('name');
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    dispatch(fetchReviewByNewsId(newsObj.id)).then((data) => setComments(data.payload));
+  }, []);
 
   const changeStage = () => {
     if (name && name.length > 0) setCommentStage('text');
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
     setCommentStage('name');
     reset();
   };
@@ -33,13 +40,15 @@ export const NewsItem = ({ newsObj }) => {
       </div>
       <div className={s.divider}></div>
       <div className={s.comments}>
-        <div className={s.comment}>
-          <img src="/img/avatar.svg" alt="avatar" />
-          <div className={s.textSide}>
-            <div className={s.commentName}>Ярослав Гарин</div>
-            <p>alksdfjlksadj lsadjflk jaslkdjf lksajdflk kasjdflk asjdflk asjdklfj sadkljf sad</p>
+        {comments.map((obj) => (
+          <div key={obj.id} className={s.comment}>
+            <img src="/img/avatar.svg" alt="avatar" />
+            <div className={s.textSide}>
+              <div className={s.commentName}>{obj.userName}</div>
+              <p>{obj.text}</p>
+            </div>
           </div>
-        </div>
+        ))}
         <div className={s.myComment}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <img src="/img/avatar.svg" alt="avatar" />

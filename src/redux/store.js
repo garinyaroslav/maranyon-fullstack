@@ -3,6 +3,7 @@ import productReducer from './product/slice';
 import categoriesReducer from './category/slice';
 import cartReducer from './cart/slice';
 import newsReducer from './news/slice';
+import reviewReducer from './review/slice';
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     categories: categoriesReducer,
     cart: cartReducer,
     news: newsReducer,
+    review: reviewReducer,
   },
 });

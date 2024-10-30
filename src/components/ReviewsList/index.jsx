@@ -1,19 +1,21 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { ProductModal } from '../ProductModal';
-import { fetchProducts, deleteProduct } from '../../redux/product/asyncActions';
+import { deleteReview, fetchReviews } from '../../redux/review/asyncActions';
+import { ReviewModal } from '../ReviewsModal';
 
-import s from './ProductsList.module.scss';
+import s from './ReviewsList.module.scss';
 
-export const ProductsList = ({ elems }) => {
+export const ReviewList = ({ elems }) => {
+  console.log(elems);
+
   const dispatch = useDispatch();
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [editableProductId, setEditableProductId] = useState(null);
 
-  const onDeleteProduct = async (id) => {
-    await dispatch(deleteProduct(id));
-    await dispatch(fetchProducts());
+  const onDeleteReview = async (id) => {
+    await dispatch(deleteReview(id));
+    await dispatch(fetchReviews());
   };
 
   const editProduct = (id) => {
@@ -23,8 +25,8 @@ export const ProductsList = ({ elems }) => {
 
   return (
     <>
-      <ProductModal isOpen={addModalIsOpen} onClose={() => setAddModalIsOpen(false)} type={'add'} />
-      <ProductModal
+      <ReviewModal isOpen={addModalIsOpen} onClose={() => setAddModalIsOpen(false)} type={'add'} />
+      <ReviewModal
         isOpen={editModalIsOpen}
         onClose={() => setEditModalIsOpen(false)}
         type={'edit'}
@@ -41,7 +43,7 @@ export const ProductsList = ({ elems }) => {
               ))}
               <div className={s.iconsElem}>
                 <img onClick={() => editProduct(elem.id)} src="/img/edit.svg" alt="edit" />
-                <img onClick={() => onDeleteProduct(elem.id)} src="/img/remove.svg" alt="remove" />
+                <img onClick={() => onDeleteReview(elem.id)} src="/img/remove.svg" alt="remove" />
               </div>
             </div>
           ))}

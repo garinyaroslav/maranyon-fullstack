@@ -1,4 +1,7 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { NewsItem } from '../../components/NewsItem';
+import { fetchNews } from '../../redux/news/asyncActions';
 
 import s from './News.module.scss';
 
@@ -33,8 +36,17 @@ const tmp = [
 ];
 
 export const News = () => {
+  const dispatch = useDispatch();
+  const { items: news, status } = useSelector((state) => state.news);
+
+  useEffect(() => {
+    (async () => {
+      await dispatch(fetchNews());
+    })();
+  }, []);
+
   const renderNews = () => {
-    return tmp.map((obj, i) => <NewsItem key={i} newsObj={obj} />);
+    if (status === 'success') return news.map((obj, i) => <NewsItem key={i} newsObj={obj} />);
   };
 
   return (
