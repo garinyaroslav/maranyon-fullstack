@@ -2,6 +2,7 @@
   .news {
     margin: 130px auto;
     width: 900px;
+    min-height: 100vh;
 
     h2 {
       text-transform: uppercase;
@@ -10,7 +11,5 @@
       font-weight: 600;
       margin-bottom: 50px;
     }
-
-    /* .newsBody {} */
   }
 }
