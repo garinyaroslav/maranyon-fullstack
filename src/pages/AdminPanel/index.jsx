@@ -45,7 +45,7 @@ export const AdminPanel = () => {
     try {
       const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/auth`, data);
 
-      setCookie('admin', '1', { secure: true, 'max-age': 60 });
+      setCookie('admin', '1', { secure: true, 'max-age': 300 });
       if (res.status === 200) setIsAuth(true);
     } catch (e) {
       console.log(e);

@@ -25,11 +25,16 @@
 
         .clue {
           display: flex;
+          align-items: center;
           flex-direction: column;
           gap: 5px;
 
           p {
             font-size: 12px;
+          }
+
+          img {
+            height: 20px;
           }
         }
       }

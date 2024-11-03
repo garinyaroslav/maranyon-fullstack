@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { Modal } from '../ui/Modal';
 import { Input } from '../ui/Input';
@@ -13,32 +14,36 @@ const reviewTitles = ['id', 'newsId', 'userName', 'text'];
 export const ReviewModal = ({ isOpen, onClose, type, editableProductId = null }) => {
   const dispatch = useDispatch();
   const [editableItem, setEditableItem] = useState({});
+  const { items: reviews } = useSelector((state) => state.review);
+  const [newId, setNewId] = useState('');
 
   useEffect(() => {
-    if (editableProductId) dispatch(fetchOneReview(editableProductId)).then((data) => setEditableItem(data.payload));
+    if (editableProductId) {
+      dispatch(fetchOneReview(editableProductId)).then((data) => setEditableItem(data.payload));
+    } else {
+      let maxId = 0;
+      for (const review of reviews) {
+        if (maxId < review.id) maxId = review.id;
+      }
+      setNewId(maxId + 1);
+    }
   }, [isOpen]);
 
-  const { register, handleSubmit, reset } = useForm({ values: type === 'edit' ? editableItem : {} });
+  const { register, handleSubmit, reset } = useForm({ values: type === 'edit' ? editableItem : { id: newId } });
 
   const onSubmit = async (data) => {
+    const newObj = {
+      ...data,
+      id: Number(data.id),
+      newsId: Number(data.newsId),
+    };
+
     switch (type) {
       case 'edit':
-        await dispatch(
-          updateReview({
-            ...data,
-            id: Number(data.id),
-            newsId: Number(data.newsId),
-          }),
-        );
+        await dispatch(updateReview(newObj));
         break;
       case 'add':
-        await dispatch(
-          addReview({
-            ...data,
-            id: Number(data.id),
-            newsId: Number(data.newsId),
-          }),
-        );
+        await dispatch(addReview(newObj));
         break;
       default:
         break;

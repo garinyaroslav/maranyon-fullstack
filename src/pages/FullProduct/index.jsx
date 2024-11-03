@@ -49,21 +49,15 @@ export const FullProduct = () => {
             <img src={itemStatus === 'success' ? item.imageUrls[image] : ''} alt="productphoto" />
           </div>
           <div className={styles.selector}>
-            <img
-              onMouseOver={() => setImage(0)}
-              src={itemStatus === 'success' ? item.imageUrls[0] : ''}
-              alt="porductminiphoto"
-            />
-            <img
-              onMouseOver={() => setImage(1)}
-              src={itemStatus === 'success' ? item.imageUrls[1] : ''}
-              alt="porductminiphoto"
-            />
-            <img
-              onMouseOver={() => setImage(2)}
-              src={itemStatus === 'success' ? item.imageUrls[2] : ''}
-              alt="porductminiphoto"
-            />
+            {itemStatus === 'success' && item.imageUrls[0] && (
+              <img onMouseOver={() => setImage(0)} src={item.imageUrls[0]} alt="porductminiphoto" />
+            )}
+            {itemStatus === 'success' && item.imageUrls[1] && (
+              <img onMouseOver={() => setImage(1)} src={item.imageUrls[1]} alt="porductminiphoto" />
+            )}
+            {itemStatus === 'success' && item.imageUrls[2] && (
+              <img onMouseOver={() => setImage(2)} src={item.imageUrls[2]} alt="porductminiphoto" />
+            )}
           </div>
         </div>
         <div className={styles.textSide}>

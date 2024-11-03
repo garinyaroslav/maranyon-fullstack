@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { Modal } from '../ui/Modal';
 import { Input } from '../ui/Input';
@@ -13,32 +14,35 @@ const newsTitles = ['id', 'title', 'image', 'description', 'createdAt'];
 export const NewsModal = ({ isOpen, onClose, type, editableProductId = null }) => {
   const dispatch = useDispatch();
   const [editableItem, setEditableItem] = useState({});
+  const { items: news } = useSelector((state) => state.news);
+  const [newId, setNewId] = useState('');
 
   useEffect(() => {
     if (editableProductId) {
       dispatch(fetchOneNews(editableProductId)).then((data) => setEditableItem(data.payload));
+    } else {
+      let maxId = 0;
+      for (const newsItem of news) {
+        if (maxId < newsItem.id) maxId = newsItem.id;
+      }
+      setNewId(maxId + 1);
     }
   }, [isOpen]);
 
-  const { register, handleSubmit, reset } = useForm({ values: type === 'edit' ? editableItem : {} });
+  const { register, handleSubmit, reset } = useForm({ values: type === 'edit' ? editableItem : { id: newId } });
 
   const onSubmit = async (data) => {
+    const newObj = {
+      ...data,
+      id: Number(data.id),
+    };
+
     switch (type) {
       case 'edit':
-        await dispatch(
-          updateNews({
-            ...data,
-            id: Number(data.id),
-          }),
-        );
+        await dispatch(updateNews(newObj));
         break;
       case 'add':
-        await dispatch(
-          addNews({
-            ...data,
-            id: Number(data.id),
-          }),
-        );
+        await dispatch(addNews(newObj));
         break;
       default:
         break;
