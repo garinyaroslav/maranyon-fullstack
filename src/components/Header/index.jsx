@@ -14,7 +14,7 @@ export const Header = () => {
   return (
     <header className={styles.root}>
       <div className={styles.container}>
-        <Link to="/app">
+        <Link to="/">
           <img className={styles.logo} src="/img/maranyon-logo.png" alt="logo" />
         </Link>
         <ul className={styles.buttons}>

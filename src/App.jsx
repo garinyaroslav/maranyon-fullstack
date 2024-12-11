@@ -7,7 +7,7 @@ export const App = () => {
   return (
     <Routes>
       <Route path="/admin" element={<AdminPanel />} />
-      <Route path="/app" element={<MainLayout />}>
+      <Route path="/" element={<MainLayout />}>
         <Route path="" element={<Home />} />
         <Route path="news" element={<News />} />
         <Route path="categories" element={<Categories />} />

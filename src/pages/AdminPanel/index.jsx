@@ -58,7 +58,7 @@ export const AdminPanel = () => {
     <>
       {isAuth ? (
         <div className={s.root}>
-          <h1 className={s.mainTitle} onClick={() => navigate('/app')}>
+          <h1 className={s.mainTitle} onClick={() => navigate('/')}>
             ⬅ Admin panel
           </h1>
           <h3 className={s.subTitle}>Products</h3>
