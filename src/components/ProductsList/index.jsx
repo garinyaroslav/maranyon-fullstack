@@ -12,7 +12,11 @@ export const ProductsList = ({ elems }) => {
   const [editableProductId, setEditableProductId] = useState(null);
 
   const onDeleteProduct = async (id) => {
-    await dispatch(deleteProduct(id));
+    const res = await dispatch(deleteProduct(id));
+    if (res.payload === undefined) {
+      alert('Не удалось удалить');
+      return;
+    }
     await dispatch(fetchProducts());
   };
 

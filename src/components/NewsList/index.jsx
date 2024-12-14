@@ -12,7 +12,11 @@ export const NewsList = ({ elems }) => {
   const [editableProductId, setEditableProductId] = useState(null);
 
   const onDeleteNews = async (id) => {
-    await dispatch(deleteNews(id));
+    const res = await dispatch(deleteNews(id));
+    if (res.payload === undefined) {
+      alert('Не удалось удалить');
+      return;
+    }
     await dispatch(fetchNews());
   };
 

@@ -12,7 +12,11 @@ export const ReviewList = ({ elems }) => {
   const [editableProductId, setEditableProductId] = useState(null);
 
   const onDeleteReview = async (id) => {
-    await dispatch(deleteReview(id));
+    const res = await dispatch(deleteReview(id));
+    if (res.payload === undefined) {
+      alert('Не удалось удалить');
+      return;
+    }
     await dispatch(fetchReviews());
   };
 

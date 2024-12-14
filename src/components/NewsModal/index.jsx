@@ -5,11 +5,18 @@ import { Modal } from '../ui/Modal';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
 import { useDispatch } from 'react-redux';
+import { TextArea } from '../ui/TextArea';
 
 import s from './NewsModal.module.scss';
 import { addNews, fetchNews, fetchOneNews, updateNews } from '../../redux/news/asyncActions';
 
-const newsTitles = ['id', 'title', 'image', 'description', 'createdAt'];
+const newsTitles = [
+  { lab: 'ИД', val: 'id' },
+  { lab: 'Название', val: 'title' },
+  { lab: 'Картинка', val: 'image' },
+  { lab: 'Описание', val: 'description' },
+  { lab: 'Дата создания', val: 'createdAt' },
+];
 
 export const NewsModal = ({ isOpen, onClose, type, editableProductId = null }) => {
   const dispatch = useDispatch();
@@ -39,15 +46,25 @@ export const NewsModal = ({ isOpen, onClose, type, editableProductId = null }) =
 
     switch (type) {
       case 'edit':
-        await dispatch(updateNews(newObj));
+        const resUp = await dispatch(updateNews(newObj));
+        if (resUp.payload === undefined) {
+          alert('Нет доступа');
+          return;
+        }
+        onCansel();
         break;
       case 'add':
-        await dispatch(addNews(newObj));
+        const resAd = await dispatch(addNews(newObj));
+        if (resAd.payload === undefined) {
+          alert('Нет доступа');
+          return;
+        }
+        onCansel();
         break;
       default:
         break;
     }
-    onCansel();
+
     await dispatch(fetchNews());
   };
 
@@ -59,14 +76,18 @@ export const NewsModal = ({ isOpen, onClose, type, editableProductId = null }) =
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div onClick={(e) => e.stopPropagation()} className={s.root}>
-        <h3>{type === 'edit' ? 'Update news' : 'New news'}</h3>
+        <h3>{type === 'edit' ? 'Обновить новость' : 'Новая новость'}</h3>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={s.items}>
             {newsTitles.map((t, i) => {
               return (
-                <div key={i} className={s.inputBox}>
-                  <span className={s.inputLabel}>{t}</span>
-                  <Input disabled={type === 'edit' && t === 'id'} name={t} register={register} />
+                <div key={t.val} className={s.inputBox}>
+                  <span className={s.inputLabel}>{t.lab}</span>
+                  {t.val === 'description' ? (
+                    <TextArea width={222} height={41} name={t.val} register={register} />
+                  ) : (
+                    <Input disabled={type === 'edit' && t.val === 'id'} name={t.val} register={register} />
+                  )}
                 </div>
               );
             })}

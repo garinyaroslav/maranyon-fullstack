@@ -10,7 +10,26 @@ import { TextArea } from '../ui/TextArea';
 
 import s from './ProductModal.module.scss';
 
-const productTitles = ['id', 'title', 'imageUrls', 'description', 'category', 'price', 'color', 'weight', 'size'];
+const productTitles = [
+  { lab: 'ИД', val: 'id' },
+  { lab: 'Название', val: 'title' },
+  { lab: 'Картинки', val: 'imageUrls' },
+  { lab: 'Описание', val: 'description' },
+  { lab: 'Категория', val: 'category' },
+  { lab: 'Цена', val: 'price' },
+  { lab: 'Цвет', val: 'color' },
+  { lab: 'Вес', val: 'weight' },
+  { lab: 'Размер', val: 'size' },
+];
+
+const options = [
+  { value: 'furnitures', label: 'Мебель' },
+  { value: 'lamps', label: 'Люстры' },
+  { value: 'electronics', label: 'Электроника' },
+  { value: 'kitchen', label: 'Кухня' },
+  { value: 'chairs', label: 'Стулья' },
+  { value: 'mirrors', label: 'Зеркала' },
+];
 
 export const ProductModal = ({ isOpen, onClose, type, editableProductId = null }) => {
   const dispatch = useDispatch();
@@ -19,7 +38,7 @@ export const ProductModal = ({ isOpen, onClose, type, editableProductId = null }
   const [newId, setNewId] = useState('');
 
   useEffect(() => {
-    if (editableProductId) {
+    if (editableProductId !== null) {
       dispatch(fetchProduct(editableProductId)).then((data) => {
         let imagesArr = [];
 
@@ -34,7 +53,7 @@ export const ProductModal = ({ isOpen, onClose, type, editableProductId = null }
       }
       setNewId(maxId + 1);
     }
-  }, [isOpen]);
+  }, [isOpen, editableProductId]);
 
   const { register, handleSubmit, reset, control } = useForm({
     values: type === 'edit' ? editableItem : { id: newId, imageUrls: [{ value: '' }] },
@@ -58,15 +77,25 @@ export const ProductModal = ({ isOpen, onClose, type, editableProductId = null }
 
     switch (type) {
       case 'edit':
-        await dispatch(updateProduct(newObj));
+        const resUp = await dispatch(updateProduct(newObj));
+        if (resUp.payload === undefined) {
+          alert('Ошибка валидации или нет доступа');
+          return;
+        }
+        onCansel();
         break;
       case 'add':
-        await dispatch(addProduct(newObj));
+        const resAd = await dispatch(addProduct(newObj));
+        console.log(resAd);
+        if (resAd.payload === undefined) {
+          alert('Ошибка валидации или нет доступа');
+          return;
+        }
+        onCansel();
         break;
       default:
         break;
     }
-    onCansel();
     await dispatch(fetchProducts());
   };
 
@@ -78,17 +107,23 @@ export const ProductModal = ({ isOpen, onClose, type, editableProductId = null }
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div onClick={(e) => e.stopPropagation()} className={s.root}>
-        <h3>{type === 'edit' ? 'Update product' : 'New product'}</h3>
+        <h3>{type === 'edit' ? 'Обновить товар' : 'Новый товар'}</h3>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={s.items}>
             {productTitles.map((t, i) => {
               return (
                 <div key={i} className={s.inputBox}>
-                  <span className={s.inputLabel}>{t}</span>
-                  {t === 'imageUrls' ? (
+                  <span className={s.inputLabel}>{t.lab}</span>
+                  {t.val === 'imageUrls' ? (
                     <div className={s.clue}>
                       {fields.map((image, i) => (
-                        <TextArea key={image.id} width={222} height={41} name={`${t}.${i}.value`} register={register} />
+                        <TextArea
+                          key={image.id}
+                          width={222}
+                          height={41}
+                          name={`${t.val}.${i}.value`}
+                          register={register}
+                        />
                       ))}
                       {fields.length < 3 && (
                         <div
@@ -100,8 +135,26 @@ export const ProductModal = ({ isOpen, onClose, type, editableProductId = null }
                         </div>
                       )}
                     </div>
+                  ) : t.val === 'category' ? (
+                    <select
+                      {...register('category', { required: true })}
+                      style={{
+                        width: 222,
+                        background: '#fff',
+                        border: '1px solid #000',
+                        padding: 12,
+                      }}
+                    >
+                      {options.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                  ) : t.val === 'description' ? (
+                    <TextArea width={222} height={41} name={t.val} register={register} />
                   ) : (
-                    <Input disabled={type === 'edit' && t === 'id'} name={t} register={register} />
+                    <Input disabled={type === 'edit' && t.val === 'id'} name={t.val} register={register} />
                   )}
                 </div>
               );

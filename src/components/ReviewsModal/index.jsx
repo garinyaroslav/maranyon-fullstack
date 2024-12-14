@@ -6,10 +6,16 @@ import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
 import { useDispatch } from 'react-redux';
 import { addReview, fetchOneReview, fetchReviews, updateReview } from '../../redux/review/asyncActions';
+import { TextArea } from '../ui/TextArea';
 
 import s from './ReviewsModal.module.scss';
 
-const reviewTitles = ['id', 'newsId', 'userName', 'text'];
+const reviewTitles = [
+  { lab: 'ИД', val: 'id' },
+  { lab: 'ИД новости', val: 'newsId' },
+  { lab: 'Имя пользователя', val: 'userName' },
+  { lab: 'Текст', val: 'text' },
+];
 
 export const ReviewModal = ({ isOpen, onClose, type, editableProductId = null }) => {
   const dispatch = useDispatch();
@@ -40,15 +46,25 @@ export const ReviewModal = ({ isOpen, onClose, type, editableProductId = null })
 
     switch (type) {
       case 'edit':
-        await dispatch(updateReview(newObj));
+        const resUp = await dispatch(updateReview(newObj));
+        if (resUp.payload === undefined) {
+          alert('Нет доступа');
+          return;
+        }
+        onCansel();
         break;
       case 'add':
-        await dispatch(addReview(newObj));
+        const resAd = await dispatch(addReview(newObj));
+        if (resAd.payload === undefined) {
+          alert('Нет доступа');
+          return;
+        }
+        onCansel();
         break;
       default:
         break;
     }
-    onCansel();
+
     await dispatch(fetchReviews());
   };
 
@@ -60,18 +76,22 @@ export const ReviewModal = ({ isOpen, onClose, type, editableProductId = null })
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div onClick={(e) => e.stopPropagation()} className={s.root}>
-        <h3>{type === 'edit' ? 'Update review' : 'New review'}</h3>
+        <h3>{type === 'edit' ? 'Обновить отзыв' : 'Новый отзыв'}</h3>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={s.items}>
-            {reviewTitles.map((t, i) => {
+            {reviewTitles.map((t) => {
               return (
-                <div key={i} className={s.inputBox}>
-                  <span className={s.inputLabel}>{t}</span>
-                  <Input
-                    disabled={(type === 'edit' && t === 'id') || (type === 'edit' && t === 'newsId')}
-                    name={t}
-                    register={register}
-                  />
+                <div key={t.val} className={s.inputBox}>
+                  <span className={s.inputLabel}>{t.lab}</span>
+                  {t.val === 'text' ? (
+                    <TextArea width={222} height={41} name={t.val} register={register} />
+                  ) : (
+                    <Input
+                      disabled={(type === 'edit' && t.val === 'id') || (type === 'edit' && t.val === 'newsId')}
+                      name={t.val}
+                      register={register}
+                    />
+                  )}
                 </div>
               );
             })}

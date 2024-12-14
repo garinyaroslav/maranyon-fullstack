@@ -8,12 +8,14 @@ export const Input = ({
   value = null,
   onChange = null,
   onKeyDown = null,
+  type = 'text',
   placeholder,
 }) => {
   if (register !== null)
     return (
       <input
-        {...register(name)}
+        {...register(name, { required: true })}
+        type={type}
         onKeyDown={onKeyDown}
         placeholder={placeholder}
         disabled={disabled}
@@ -26,6 +28,7 @@ export const Input = ({
       <input
         value={value}
         nChange={onChange}
+        type={type}
         onKeyDown={onKeyDown}
         oplaceholder={placeholder}
         disabled={disabled}
