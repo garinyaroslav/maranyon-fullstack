@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { deleteNews, fetchNews } from '../../redux/news/asyncActions';
+import { fetchReviews } from '../../redux/review/asyncActions';
 import { NewsModal } from '../NewsModal';
 
 import s from './NewsList.module.scss';
@@ -18,6 +19,7 @@ export const NewsList = ({ elems }) => {
       return;
     }
     await dispatch(fetchNews());
+    await dispatch(fetchReviews());
   };
 
   const editProduct = (id) => {
